@@ -43,6 +43,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/CreateExamPage.vue')
       },
       {
+        path: '/exams/:id/edit',
+        name: 'EditExam',
+        component: () => import('pages/EditExamPage.vue')
+      },
+      {
         path: '/exams/results',
         name: 'ExamResults',
         component: () => import('pages/ExamResultsPage.vue')

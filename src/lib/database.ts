@@ -49,6 +49,7 @@ export interface Exam {
   time_limit: boolean
   created_at: string
   updated_at: string
+  questions?: Question[]
 }
 
 export interface Question {
@@ -227,6 +228,17 @@ export class DatabaseService {
     return data || []
   }
 
+  static async getExam(id: string): Promise<Exam | null> {
+    const { data, error } = await supabase
+      .from('exams')
+      .select('*')
+      .eq('id', id)
+      .single()
+
+    if (error) throw error
+    return data
+  }
+
   static async createExam(examData: Partial<Exam>): Promise<Exam> {
     const { data, error } = await supabase
       .from('exams')
@@ -250,11 +262,11 @@ export class DatabaseService {
     return data
   }
 
-  static async deleteExam(id: string): Promise<void> {
+  static async deleteExam(examId: string): Promise<void> {
     const { error } = await supabase
       .from('exams')
       .delete()
-      .eq('id', id)
+      .eq('id', examId)
 
     if (error) throw error
   }
@@ -294,6 +306,48 @@ export class DatabaseService {
 
     if (error) throw error
     return data
+  }
+
+  static async updateQuestion(id: string, updates: Partial<Question>): Promise<Question> {
+    const { data, error } = await supabase
+      .from('questions')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+    return data
+  }
+
+  static async updateQuestionOption(id: string, updates: Partial<QuestionOption>): Promise<QuestionOption> {
+    const { data, error } = await supabase
+      .from('question_options')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+    return data
+  }
+
+  static async deleteQuestion(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('questions')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error
+  }
+
+  static async deleteQuestionOption(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('question_options')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error
   }
 
   // Exam Attempts

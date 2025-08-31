@@ -1,100 +1,74 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="exams-page">
     <div class="exams">
       <!-- Header -->
       <div class="exams__header">
-        <div class="row items-center justify-between">
+        <div class="exams__header-content">
           <div>
             <h1 class="exams__title">{{ langStore.getText('exams') }}</h1>
             <p class="exams__subtitle">{{ langStore.getText('manageExams') }}</p>
           </div>
-          <q-btn
-            color="primary"
-            icon="add"
-            :label="langStore.getText('createExam')"
-            @click="$router.push('/exams/create')"
-          />
         </div>
       </div>
 
       <!-- Stats Cards -->
-      <div class="exams__stats q-mb-lg">
-        <div class="row q-gutter-md">
-          <div class="col-md-3">
-            <q-card class="exams__stat-card">
-              <q-card-section class="text-center">
-                <q-icon name="quiz" size="3rem" color="primary" />
-                <div class="text-h4 q-mt-sm">{{ exams.length }}</div>
-                <div class="text-subtitle2">{{ langStore.getText('totalExams') }}</div>
-              </q-card-section>
-            </q-card>
-          </div>
-          <div class="col-md-3">
-            <q-card class="exams__stat-card">
-              <q-card-section class="text-center">
-                <q-icon name="schedule" size="3rem" color="warning" />
-                <div class="text-h4 q-mt-sm">{{ activeExamsCount }}</div>
-                <div class="text-subtitle2">{{ langStore.getText('activeExams') }}</div>
-              </q-card-section>
-            </q-card>
-          </div>
-          <div class="col-md-3">
-            <q-card class="exams__stat-card">
-              <q-card-section class="text-center">
-                <q-icon name="check_circle" size="3rem" color="positive" />
-                <div class="text-h4 q-mt-sm">{{ completedExamsCount }}</div>
-                <div class="text-subtitle2">{{ langStore.getText('completedExams') }}</div>
-              </q-card-section>
-            </q-card>
-          </div>
-          <div class="col-md-3">
-            <q-card class="exams__stat-card">
-              <q-card-section class="text-center">
-                <q-icon name="analytics" size="3rem" color="info" />
-                <div class="text-h4 q-mt-sm">{{ averageScore }}%</div>
-                <div class="text-subtitle2">{{ langStore.getText('averageScore') }}</div>
-              </q-card-section>
-            </q-card>
-          </div>
+      <div class="exams__stats">
+        <div class="exams__stats-grid">
+          <q-card class="exams__stat-card">
+            <q-card-section class="text-center">
+              <q-icon name="quiz" size="3rem" color="primary" />
+              <div class="text-h4 q-mt-sm">{{ exams.length }}</div>
+              <div class="text-subtitle2">{{ langStore.getText('totalExams') }}</div>
+            </q-card-section>
+          </q-card>
+          <q-card class="exams__stat-card">
+            <q-card-section class="text-center">
+              <q-icon name="schedule" size="3rem" color="warning" />
+              <div class="text-h4 q-mt-sm">{{ activeExamsCount }}</div>
+              <div class="text-subtitle2">{{ langStore.getText('activeExams') }}</div>
+            </q-card-section>
+          </q-card>
+          <q-card class="exams__stat-card">
+            <q-card-section class="text-center">
+              <q-icon name="check_circle" size="3rem" color="positive" />
+              <div class="text-h4 q-mt-sm">{{ completedExamsCount }}</div>
+              <div class="text-subtitle2">{{ langStore.getText('completedExams') }}</div>
+            </q-card-section>
+          </q-card>
+
         </div>
       </div>
 
       <!-- Search and Filters -->
-      <div class="exams__filters q-mb-md">
-        <div class="row q-gutter-md">
-          <div class="col-md-4">
-            <q-input
-              v-model="searchQuery"
-              :placeholder="langStore.getText('searchExams')"
-              outlined
-              dense
-              clearable
-            >
-              <template v-slot:prepend>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </div>
-          <div class="col-md-3">
-            <q-select
-              v-model="statusFilter"
-              :options="statusOptions"
-              :label="langStore.getText('status')"
-              outlined
-              dense
-              clearable
-            />
-          </div>
-          <div class="col-md-3">
-            <q-select
-              v-model="difficultyFilter"
-              :options="difficultyOptions"
-              :label="langStore.getText('difficulty')"
-              outlined
-              dense
-              clearable
-            />
-          </div>
+      <div class="exams__filters">
+        <div class="exams__filters-grid">
+          <q-input
+            v-model="searchQuery"
+            :placeholder="langStore.getText('searchExams')"
+            outlined
+            dense
+            clearable
+          >
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+          <q-select
+            v-model="statusFilter"
+            :options="statusOptions"
+            :label="langStore.getText('status')"
+            outlined
+            dense
+            clearable
+          />
+          <q-select
+            v-model="difficultyFilter"
+            :options="difficultyOptions"
+            :label="langStore.getText('difficulty')"
+            outlined
+            dense
+            clearable
+          />
         </div>
       </div>
 
@@ -125,12 +99,7 @@
                     <q-item-section>{{ langStore.getText('edit') }}</q-item-section>
                   </q-item>
 
-                  <q-item clickable v-close-popup @click="viewResults(props.row)">
-                    <q-item-section avatar>
-                      <q-icon name="analytics" />
-                    </q-item-section>
-                    <q-item-section>{{ langStore.getText('results') }}</q-item-section>
-                  </q-item>
+
 
                   <q-separator />
 
@@ -147,12 +116,23 @@
 
           <template v-slot:body-cell-status="props">
             <q-td :props="props">
-              <q-chip
-                :color="getStatusColor(props.row.status)"
-                text-color="white"
-                :label="getStatusText(props.row.status)"
-                size="sm"
-              />
+              <div class="row items-center q-gutter-sm">
+                <q-toggle
+                  v-model="props.row.status"
+                  :color="props.row.status === 'active' ? 'positive' : 'grey'"
+                  :icon="props.row.status === 'active' ? 'check' : 'block'"
+                  size="sm"
+                  :true-value="'active'"
+                  :false-value="'draft'"
+                  @update:model-value="toggleExamStatus(props.row)"
+                />
+                <q-chip
+                  :color="getStatusColor(props.row.status)"
+                  text-color="white"
+                  :label="getStatusText(props.row.status)"
+                  size="sm"
+                />
+              </div>
             </q-td>
           </template>
 
@@ -160,8 +140,8 @@
             <q-td :props="props">
               <q-chip
                 :color="getDifficultyColor(props.row.difficulty)"
-                text-color="white"
                 :label="getDifficultyText(props.row.difficulty)"
+                text-color="white"
                 size="sm"
               />
             </q-td>
@@ -193,6 +173,17 @@
         </q-table>
       </q-card>
 
+      <!-- Create Exam Button at Bottom -->
+      <div class="exams__actions">
+        <q-btn
+          color="primary"
+          icon="add"
+          :label="langStore.getText('createExam')"
+          size="lg"
+          @click="$router.push('/exams/create')"
+        />
+      </div>
+
       <!-- View Exam Dialog -->
       <q-dialog v-model="showViewDialog" maximized>
         <q-card>
@@ -203,8 +194,8 @@
           </q-card-section>
 
           <q-card-section v-if="selectedExam">
-            <div class="row q-gutter-lg">
-              <div class="col-12 col-md-8">
+            <div class="exams__dialog-content">
+              <div class="exams__dialog-main">
                 <q-card flat bordered>
                   <q-card-section>
                     <div class="text-h6">{{ langStore.getText('examDetails') }}</div>
@@ -271,7 +262,7 @@
                 </q-card>
               </div>
 
-              <div class="col-12 col-md-4">
+              <div class="exams__dialog-sidebar">
                 <q-card flat bordered>
                   <q-card-section>
                     <div class="text-h6">{{ langStore.getText('examSettings') }}</div>
@@ -320,13 +311,7 @@
           </q-card-section>
 
           <q-card-actions align="right">
-            <q-btn
-              :label="langStore.getText('viewResults')"
-              color="info"
-              icon="analytics"
-              @click="viewResults(selectedExam!)"
-              v-close-popup
-            />
+            
             <q-btn
               :label="langStore.getText('edit')"
               color="primary"
@@ -391,23 +376,18 @@ const completedExamsCount = computed(() =>
   exams.value.filter(exam => exam.status === 'completed').length
 )
 
-const averageScore = computed(() => {
-  // This would be calculated from exam attempts in a real implementation
-  return 78
-})
+const statusOptions = computed(() => [
+  { label: langStore.getText('draft'), value: 'draft' },
+  { label: langStore.getText('active'), value: 'active' },
+  { label: langStore.getText('completed'), value: 'completed' },
+  { label: langStore.getText('archived'), value: 'archived' }
+])
 
-const statusOptions = [
-  { label: 'مسودة', value: 'draft' },
-  { label: 'نشط', value: 'active' },
-  { label: 'مكتمل', value: 'completed' },
-  { label: 'مؤرشف', value: 'archived' }
-]
-
-const difficultyOptions = [
-  { label: 'سهل', value: 'easy' },
-  { label: 'متوسط', value: 'medium' },
-  { label: 'صعب', value: 'hard' }
-]
+const difficultyOptions = computed(() => [
+  { label: langStore.getText('easy'), value: 'easy' },
+  { label: langStore.getText('medium'), value: 'medium' },
+  { label: langStore.getText('hard'), value: 'hard' }
+])
 
 const columns = [
   {
@@ -480,10 +460,10 @@ function getStatusColor(status: string): string {
 
 function getStatusText(status: string): string {
   switch (status) {
-    case 'active': return 'نشط'
-    case 'completed': return 'مكتمل'
-    case 'draft': return 'مسودة'
-    case 'archived': return 'مؤرشف'
+    case 'active': return langStore.getText('active')
+    case 'completed': return langStore.getText('completed')
+    case 'draft': return langStore.getText('draft')
+    case 'archived': return langStore.getText('archived')
     default: return status
   }
 }
@@ -499,15 +479,16 @@ function getDifficultyColor(difficulty: string): string {
 
 function getDifficultyText(difficulty: string): string {
   switch (difficulty) {
-    case 'easy': return 'سهل'
-    case 'medium': return 'متوسط'
-    case 'hard': return 'صعب'
+    case 'easy': return langStore.getText('easy')
+    case 'medium': return langStore.getText('medium')
+    case 'hard': return langStore.getText('hard')
     default: return difficulty
   }
 }
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString('ar-SA')
+  const locale = langStore.currentLanguage === 'ar' ? 'ar-SA' : 'en-US'
+  return new Date(dateString).toLocaleDateString(locale)
 }
 
 async function loadExams() {
@@ -518,7 +499,7 @@ async function loadExams() {
     console.error('Error loading exams:', error)
     $q.notify({
       type: 'negative',
-      message: langStore.getText('errorLoadingExams') || 'حدث خطأ في تحميل الاختبارات'
+      message: langStore.getText('errorLoadingExams')
     })
   } finally {
     loading.value = false
@@ -528,24 +509,71 @@ async function loadExams() {
 function viewExam(exam: Exam) {
   selectedExam.value = exam
   showViewDialog.value = true
+  // Load questions for this exam
+  loadExamQuestions(exam.id)
+}
+
+async function loadExamQuestions(examId: string) {
+  try {
+    const questions = await DatabaseService.getQuestions(examId)
+    if (selectedExam.value) {
+      selectedExam.value.questions = questions
+    }
+  } catch (error) {
+    console.error('Error loading questions:', error)
+  }
 }
 
 function editExam(exam: Exam) {
-  // TODO: Implement edit functionality
-  $q.notify({
-    type: 'info',
-    message: `تعديل الاختبار: ${exam.title}`
-  })
+  router.push(`/exams/${exam.id}/edit`)
 }
 
-function viewResults(exam: Exam) {
-  void router.push(`/exams/results?examId=${exam.id}`)
+async function toggleExamStatus(exam: Exam) {
+  try {
+    // Toggle between draft and active status
+    const newStatus = exam.status === 'active' ? 'draft' : 'active'
+    
+    // If trying to set to active, check if required fields are present
+    if (newStatus === 'active') {
+      // Check if exam has required fields for active status
+      if (!exam.start_date) {
+        $q.notify({
+          type: 'warning',
+          message: 'Cannot activate exam without start date. Please edit the exam first.'
+        })
+        return
+      }
+      
+      // Check if exam has questions
+      const examQuestions = await DatabaseService.getQuestions(exam.id)
+      if (!examQuestions || examQuestions.length === 0) {
+        $q.notify({
+          type: 'warning',
+          message: 'Cannot activate exam without questions. Please add questions first.'
+        })
+        return
+      }
+    }
+    
+    await DatabaseService.updateExam(exam.id, { status: newStatus })
+    exam.status = newStatus
+    $q.notify({
+      type: 'positive',
+      message: langStore.getText('examStatusToggled')
+    })
+  } catch (error) {
+    console.error('Error toggling exam status:', error)
+    $q.notify({
+      type: 'negative',
+      message: langStore.getText('errorTogglingExamStatus')
+    })
+  }
 }
 
 function deleteExam(exam: Exam) {
   $q.dialog({
     title: langStore.getText('confirmDelete'),
-    message: `${langStore.getText('deleteExamConfirm')} ${exam.title}؟`,
+    message: `${langStore.getText('deleteExamConfirm')} ${exam.title}?`,
     cancel: true,
     persistent: true
   }).onOk(() => {
@@ -555,13 +583,13 @@ function deleteExam(exam: Exam) {
         exams.value = exams.value.filter(e => e.id !== exam.id)
         $q.notify({
           type: 'positive',
-          message: langStore.getText('examDeleted') || 'تم حذف الاختبار بنجاح'
+          message: langStore.getText('examDeleted')
         })
       } catch (error) {
         console.error('Error deleting exam:', error)
         $q.notify({
           type: 'negative',
-          message: langStore.getText('errorDeletingExam') || 'حدث خطأ في حذف الاختبار'
+          message: langStore.getText('errorDeletingExam')
         })
       }
     })()
@@ -574,9 +602,23 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+.exams-page {
+  padding: 0 !important;
+}
+
 .exams {
+  padding: 2rem;
+  width: 100%;
+  max-width: 100%;
+
   &__header {
     margin-bottom: 2rem;
+  }
+
+  &__header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   &__title {
@@ -596,6 +638,14 @@ onMounted(async () => {
     margin-bottom: 2rem;
   }
 
+  &__stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
+  }
+
   &__stat-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -610,11 +660,56 @@ onMounted(async () => {
     padding: 1.5rem;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+  }
+
+  &__filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
   }
 
   &__table-card {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
+  }
+
+  &__actions {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  &__dialog-content {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__dialog-main {
+    flex: 2;
+  }
+
+  &__dialog-sidebar {
+    flex: 1;
+  }
+
+  // Responsive design
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    &__stats-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+
+    &__filters-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    &__dialog-content {
+      flex-direction: column;
+    }
   }
 }
 </style>
