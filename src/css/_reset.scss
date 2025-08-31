@@ -1,0 +1,47 @@
+// Base Reset for Arabic Learning Admin Panel
+* {
+  box-sizing: border-box;
+}
+
+html {
+  direction: rtl;
+  font-family: 'Noto Sans Arabic', 'Noto Kufi Arabic', 'Noto Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  font-family: 'Noto Sans Arabic', 'Noto Kufi Arabic', 'Noto Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #1e293b;
+  background-color: #f8fafc;
+}
+
+// RTL specific adjustments
+.q-field__control {
+  direction: rtl;
+}
+
+.q-input {
+  direction: rtl;
+}
+
+// Arabic text alignment
+.arabic-text {
+  text-align: right;
+  direction: rtl;
+}
+
+// Utility classes
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-left {
+  text-align: left !important;
+} 

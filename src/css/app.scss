@@ -1,1 +1,19 @@
-// app global css in SCSS form
+// Import Quasar variables
+@import './quasar.variables.scss';
+
+// Import base reset
+@import './_reset.scss';
+
+// Import page styles
+@import './login.scss';
+
+// Global styles
+.app-container {
+  min-height: 100vh;
+  direction: rtl;
+}
+
+// Arabic & Kurdish font imports
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&display=swap');

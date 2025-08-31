@@ -1,25 +1,18 @@
-// Quasar SCSS (& Sass) Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass/SCSS variables found in Quasar's source Sass/SCSS files.
+// Arabic Learning Admin Panel Color Palette
+$primary   : #7ADAA5; // Dark slate
+$secondary : #239BA7; // Slate 700
+$accent    : #06b6d4; // Cyan
 
-// Check documentation for full list of Quasar variables
+$dark      : #1e293b; // Slate 800
+$dark-page : #0f172a; // Slate 900
 
-// Your own variables (that are declared here) and Quasar's own
-// ones will be available out of the box in your .vue/.scss/.sass files
+$positive  : #10b981; // Emerald 500
+$negative  : #ef4444; // Red 500
+$info      : #3b82f6; // Blue 500
+$warning   : #f59e0b; // Amber 500
 
-// It's highly recommended to change the default colors
-// to match your app's branding.
-// Tip: Use the "Theme Builder" on Quasar's documentation website.
+// Arabic & Kurdish Typography  
+$typography-font-family: 'Noto Sans Arabic', 'Noto Kufi Arabic', 'Noto Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-$primary   : #1976D2;
-$secondary : #26A69A;
-$accent    : #9C27B0;
-
-$dark      : #1D1D1D;
-$dark-page : #121212;
-
-$positive  : #21BA45;
-$negative  : #C10015;
-$info      : #31CCEC;
-$warning   : #F2C037;
+// RTL Support
+$body-direction: rtl;
